@@ -1,0 +1,23 @@
+import tensorflow as tf
+a = tf.constant([5.0, 3.0])
+b = tf.constant([2.0, 7.0])
+c = a + b
+print("Eager Execution Output:", c.numpy())
+
+@tf.function
+def multiply_tensors(x, y):
+    return x * y
+
+result = multiply_tensors(a, b)
+print("Graph Mode Output:", result.numpy())
+
+
+THEORY -
+This code shows the difference between **Eager Execution** and **Graph Execution** in TensorFlow.
+TensorFlow normally works with a **computation graph**, where operations are built as a graph and executed later for efficiency. 
+But since TensorFlow 2.x, **Eager Execution** is enabled by default, meaning operations are run immediately and return results directly like normal Python code.
+In the first part, two tensors `a` and `b` are created, and `c = a + b` runs instantly. Printing `c.numpy()` gives the result as a NumPy array, which is eager execution.
+In the second part, the function `multiply_tensors` is decorated with `@tf.function`, which tells TensorFlow to convert it into a computation graph. 
+This means the function runs in **graph mode**, optimizing performance and making it suitable for large-scale training. 
+When `multiply_tensors(a, b)` is called, it executes as part of the computation graph, and the output is again converted to a NumPy array for printing.
+So, the code demonstrates that TensorFlow can execute operations both eagerly (immediate results) and in graph mode (optimized execution).
