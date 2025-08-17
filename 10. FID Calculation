@@ -1,0 +1,72 @@
+from scipy.linalg import sqrtm
+import numpy as np
+
+def calculate_fid(mu1, sigma1, mu2, sigma2):
+    diff = mu1 - mu2
+    covmean = sqrtm(sigma1.dot(sigma2))
+    fid = diff.dot(diff) + np.trace(sigma1 + sigma2 - 2 * covmean)
+    return np.real(fid)
+
+mu1, sigma1 = np.random.rand(3), np.eye(3)
+mu2, sigma2 = np.random.rand(3), np.eye(3)
+
+print("FID Score:", calculate_fid(mu1, sigma1, mu2, sigma2))
+
+
+THEORY -
+theory of FID (Fréchet Inception Distance)
+
+1. FID is used to **measure the similarity between two sets of images** (usually real vs. generated).
+
+2. It compares the **feature distributions** of both sets, not raw pixels.
+
+3. For each set, features are modeled as a **multivariate Gaussian** with:
+
+   * mean vector (μ)
+   * covariance matrix (Σ)
+
+4. The FID formula is:
+
+   ```
+   FID = ||μ1 - μ2||² + Tr(Σ1 + Σ2 - 2 * sqrt(Σ1 Σ2))
+   ```
+
+   * First term = distance between means.
+   * Second term = difference in covariance (spread of features).
+
+5. Lower FID → generated images are closer to real ones.
+
+6. Higher FID → images look less realistic.
+
+In your code:
+
+* You created random means (`mu1, mu2`) and identity covariance matrices (`sigma1, sigma2`).
+* `sqrtm` computes the matrix square root of the product of covariances.
+* The function returns a real FID value (`np.real(fid)`).
+
+👉 This is a **toy example**. In practice, μ and Σ are computed from **Inception-v3 embeddings** of large image batches (real vs. generated).
+
+
+
+* `from scipy.linalg import sqrtm` → imports function to compute the square root of a matrix.
+
+* `import numpy as np` → imports NumPy for arrays and math operations.
+
+* `def calculate_fid(mu1, sigma1, mu2, sigma2):` → defines a function to calculate FID.
+
+* `diff = mu1 - mu2` → finds the difference between the two mean vectors.
+
+* `covmean = sqrtm(sigma1.dot(sigma2))` → multiplies two covariance matrices and computes their square root.
+
+* `fid = diff.dot(diff) + np.trace(sigma1 + sigma2 - 2 * covmean)` → calculates the FID formula using mean difference and covariance statistics.
+
+* `return np.real(fid)` → ensures the result is real (removes small imaginary values from computation).
+
+* `mu1, sigma1 = np.random.rand(3), np.eye(3)` → creates random mean (3D) and identity covariance for dataset 1.
+
+* `mu2, sigma2 = np.random.rand(3), np.eye(3)` → creates random mean and identity covariance for dataset 2.
+
+* `print("FID Score:", calculate_fid(mu1, sigma1, mu2, sigma2))` → calls the function and prints the FID score.
+
+
+
