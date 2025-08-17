@@ -1,0 +1,32 @@
+from gensim.models import Word2Vec
+
+sentences = [
+    ["artificial", "intelligence", "is", "cool"],
+    ["machine", "learning", "is", "fun"],
+    ["ai", "learning", "uses", "neural", "networks"]
+]
+model = Word2Vec(sentences, vector_size=10, window=2, min_count=1, sg=1)
+
+print("Vector for 'learning':", model.wv['learning'])
+print("Most similar to 'learning':", model.wv.most_similar('learning'))
+
+THEORY -
+This code is about **Word2Vec**, a word embedding model from the gensim library. 
+
+* The `sentences` list is your training data, where each inner list is a sentence split into words.
+* `Word2Vec` trains a model to represent words as numeric **vectors** in such a way that words with similar meaning are closer in vector space.
+
+Parameters used:
+
+* `vector_size=10` → each word is represented by a 10-dimensional vector.
+* `window=2` → context window size, meaning the model looks at 2 words to the left and right to learn relationships.
+* `min_count=1` → include all words, even if they appear only once.
+* `sg=1` → use the Skip-Gram algorithm (predicts surrounding words given a target word).
+
+After training:
+
+* `model.wv['learning']` → gives the learned vector representation of the word "learning".
+* `model.wv.most_similar('learning')` → finds words in the vocabulary most similar to "learning" based on cosine similarity.
+
+So basically, this code creates a small Word2Vec model, shows the vector for "learning," and finds other words that the model thinks are most related to it.
+
