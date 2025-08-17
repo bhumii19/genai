@@ -1,0 +1,60 @@
+pip install faiss-cpu
+import faiss
+import numpy as np
+
+data = np.random.random((5, 4)).astype('float32')
+index = faiss.IndexFlatL2(4)
+index.add(data)
+
+query = np.random.random((1, 4)).astype('float32')
+distances, indices = index.search(query, k=3)
+
+print("Query Vector:", query)
+print("Top 3 Nearest Indices:", indices)
+print("Distances:", distances)
+
+THEORY -
+### Theory of FAISS Similarity Search
+
+* FAISS (Facebook AI Similarity Search) is a library for **fast nearest neighbor search** in large datasets.
+* It’s useful when you have **millions of vectors** (like images, embeddings, documents) and you want to quickly find the most similar ones.
+* Similarity is usually measured by **distance** (e.g., Euclidean distance, cosine similarity).
+* FAISS creates an **index** of vectors, then allows fast search queries for top-k nearest neighbors.
+
+
+* `import faiss`
+  Loads the FAISS library for similarity search.
+
+* `import numpy as np`
+  Loads NumPy to create random vectors and handle arrays.
+
+* `data = np.random.random((5, 4)).astype('float32')`
+  Creates a dataset of 5 vectors, each of dimension 4, with random values.
+  Converts them to `float32` because FAISS requires that data type.
+
+* `index = faiss.IndexFlatL2(4)`
+  Creates a FAISS index that uses **L2 distance (Euclidean distance)** for similarity.
+  `4` indicates the vector dimension.
+
+* `index.add(data)`
+  Adds the dataset (5 vectors) to the FAISS index for searching.
+
+* `query = np.random.random((1, 4)).astype('float32')`
+  Creates a random query vector of size 4, which will be compared with the 5 dataset vectors.
+
+* `distances, indices = index.search(query, k=3)`
+  Searches for the **3 nearest neighbors** (`k=3`) of the query vector.
+  Returns:
+
+  * `distances`: The L2 distances between the query and each nearest neighbor.
+  * `indices`: The positions (indexes) of the top 3 closest vectors in the dataset.
+
+* `print("Query Vector:", query)`
+  Displays the query vector used for searching.
+
+* `print("Top 3 Nearest Indices:", indices)`
+  Displays the indices of the dataset vectors most similar to the query.
+
+* `print("Distances:", distances)`
+  Shows the similarity distances (smaller means more similar).
+
