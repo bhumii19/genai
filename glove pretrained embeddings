@@ -1,0 +1,18 @@
+import gensim.downloader as api
+
+glove_model = api.load("glove-wiki-gigaword-50")
+
+print("Vector for 'computer':", glove_model['computer'])
+print("Similarity between 'computer' and 'laptop':", glove_model.similarity('computer', 'laptop'))
+
+THEORY -
+This code uses a **pre-trained word embedding model** instead of training one from scratch. Here’s how it works:
+
+* `import gensim.downloader as api` → allows you to download and load pre-trained models easily.
+* `glove_model = api.load("glove-wiki-gigaword-50")` → loads the **GloVe embeddings** trained on Wikipedia + Gigaword dataset, where each word is represented by a 50-dimensional vector.
+* `glove_model['computer']` → retrieves the 50-dimensional vector for the word "computer".
+* `glove_model.similarity('computer', 'laptop')` → calculates the **cosine similarity** between the two word vectors. A value closer to 1 means they are very similar in meaning, while values near 0 mean they are unrelated.
+
+So, this code shows how to use a ready-made GloVe model to get word embeddings and measure semantic similarity between words.
+
+
