@@ -6,6 +6,13 @@ print("Vector for 'computer':", glove_model['computer'])
 print("Similarity between 'computer' and 'laptop':", glove_model.similarity('computer', 'laptop'))
 
 THEORY -
+GloVe (Global Vectors for Word Representation) is a method for learning word embeddings developed by Stanford.
+It represents words as numerical vectors in such a way that words with similar meanings are located close to each other in the vector space.
+
+Unlike Word2Vec, which learns embeddings by predicting surrounding words, GloVe is based on analyzing the global co-occurrence statistics of words in a large text corpus.
+It builds a co-occurrence matrix (how often words appear together) and then factorizes it to generate dense vector representations.
+
+In short, GloVe is a pre-trained word embedding model that captures both local context (word-to-word relations) and global statistics (overall word distribution), making it powerful for semantic similarity tasks.
 This code uses a **pre-trained word embedding model** instead of training one from scratch. Here’s how it works:
 
 * `import gensim.downloader as api` → allows you to download and load pre-trained models easily.
