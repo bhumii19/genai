@@ -1,0 +1,25 @@
+import numpy as np
+import matplotlib.pyplot as plt
+
+# Generate synthetic data 
+data_group1 = np.random.normal(loc=50, scale=10, size=500)   # Group 1
+data_group2 = np.random.normal(loc=200, scale=15, size=500)  # Group 2
+
+# Plot histogram for both groups
+plt.hist(data_group1, label='Group 1', color='blue')
+plt.hist(data_group2, label='Group 2', color='green')
+plt.title("Data Distribution")
+plt.xlabel("Data Values")
+plt.ylabel("Frequency")
+plt.legend()
+plt.show()
+
+
+THEORY- 
+This code is based on the concept of the **normal distribution** and **histograms**. 
+A normal distribution is a continuous probability distribution shaped like a bell curve, where most values lie close to the mean and fewer values appear farther away. 
+The spread of the data is controlled by the standard deviation: a smaller value makes the curve narrower, while a larger one makes it wider.
+A histogram is a graphical representation of data distribution. It divides the data into intervals (bins) and shows the frequency of values in each bin as bars. 
+This helps visualize how data points are spread out and whether they follow a certain pattern, such as a normal distribution.
+In this code, two groups of normally distributed data are generated with different means and standard deviations. 
+Plotting them on the same histogram allows comparison of their centers and spreads, making it clear how differently the two groups are distributed.
