@@ -1,0 +1,45 @@
+import torch
+import torch.nn.functional as F
+
+x = torch.rand(1, 3, 4)
+Q, K, V = x, x, x
+
+scores = torch.matmul(Q, K.transpose(-2, -1)) / (4 ** 0.5)
+weights = F.softmax(scores, dim=-1)
+output = torch.matmul(weights, V)
+
+print("Attention Weights:", weights)
+print("Output:", output)
+
+THEORY - 
+This code is a **simple implementation of scaled dot-product attention** (the core idea behind Transformers). Let me explain:
+
+1. `x = torch.rand(1, 3, 4)` → creates a random input tensor.
+
+   * Shape = `(batch=1, seq_len=3, embed_dim=4)`.
+   * So you have 3 tokens, each represented by a 4-dimensional vector.
+
+2. `Q, K, V = x, x, x` → for simplicity, Query, Key, and Value are all set to the same input.
+
+   * In real transformers, Q, K, and V come from learned linear projections.
+
+3. `scores = torch.matmul(Q, K.transpose(-2, -1)) / (4 ** 0.5)` →
+
+   * Performs dot product between Q and K to measure similarity.
+   * Divides by √(d) (here √4=2) for scaling (avoids large values).
+   * Shape of `scores` = `(1, 3, 3)` → pairwise similarity between the 3 tokens.
+
+4. `weights = F.softmax(scores, dim=-1)` → applies softmax so weights across each row sum to 1.
+
+   * These are the **attention weights**, telling how much each token should attend to the others.
+
+5. `output = torch.matmul(weights, V)` → multiplies weights with values (V).
+
+   * Produces the **attention output**: a weighted sum of values.
+   * Shape = `(1, 3, 4)` → same as input embedding shape.
+
+6. Finally, it prints the attention weights and the resulting output vectors.
+
+So this code demonstrates how attention lets each token look at others and combine information in a weighted way.
+
+
