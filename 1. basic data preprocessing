@@ -1,0 +1,50 @@
+import numpy as np
+from sklearn.preprocessing import MinMaxScaler
+import matplotlib.pyplot as plt
+
+# Generate synthetic data
+data = np.random.randint(0, 255, (10, 5))
+print("Original Data:\n", data)
+
+# Scale data between 0 and 1
+scaler = MinMaxScaler()
+scaled_data = scaler.fit_transform(data)
+print("Scaled Data:\n", scaled_data)
+
+THEORY -
+
+1. **Feature Scaling** – In machine learning, datasets often have values in different ranges (e.g., age in 20–70, salary in 10,000–1,00,000). Models may get biased towards larger values. Scaling solves this.
+
+2. **Min-Max Normalization** – It is a technique to scale features to a fixed range, usually \[0, 1]. Formula:
+
+   ```
+   x_scaled = (x - x_min) / (x_max - x_min)
+   ```
+
+   * `x` = original value
+   * `x_min`, `x_max` = minimum and maximum values in that column
+
+3. **Why Scaling is Needed** –
+
+   * Algorithms like KNN, SVM, Neural Networks, and Gradient Descent-based methods are sensitive to scale.
+   * Prevents features with large ranges from dominating.
+   * Improves training speed and accuracy.
+
+4. **MinMaxScaler in sklearn** –
+
+   * It automatically computes column-wise `min` and `max`.
+   * Rescales each feature into \[0, 1].
+   * Keeps the **original data shape** but changes the scale.
+
+5. **Random Data Generation** – `np.random.randint(0,255,(10,5))` creates sample input for testing scaling. In real cases, data comes from datasets.
+
+6. **Effect of Scaling** – After scaling, all features have equal importance during training since they lie within the same range.
+
+7. **Alternative Scaling Methods** –
+
+   * **Standardization (Z-score):** `(x - mean)/std` → makes data have mean 0, variance 1.
+   * **Robust Scaling:** Uses median and IQR, less sensitive to outliers.
+
+8. **Visualization** – Scaling effects are often plotted (though in this code `plt` is imported but not used).
+
+
