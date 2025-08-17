@@ -1,0 +1,53 @@
+import numpy as np
+import matplotlib.pyplot as plt
+
+image = np.random.rand(28, 28)
+plt.imshow(image, cmap='gray')
+plt.title("Step 0: Noise")
+plt.show()
+
+for step in range(1, 4):
+    image = image * 0.9  # reduce noise
+    plt.imshow(image, cmap='gray')
+    plt.title(f"Step {step}: Denoising")
+    plt.show()
+
+THEORY -
+1. Images often get corrupted by **noise** (unwanted random variations in pixel values).
+2. The goal of **image denoising** is to recover the clean/original image while removing the noise.
+3. Common types of noise:
+
+   * **Gaussian noise** → random variations following a Gaussian distribution.
+   * **Salt-and-pepper noise** → random black and white pixels.
+   * **Speckle noise** → common in radar/medical images.
+4. Traditional denoising methods:
+
+   * **Filtering** (mean, Gaussian, median filters).
+   * **Wavelet transforms** to separate noise from useful details.
+   * **Non-local means** (uses similarity in patches).
+5. Modern methods:
+
+   * **Deep learning (CNNs, autoencoders, diffusion models)** learn to map noisy images to clean ones.
+   * Used in medical imaging, photography, and computer vision.
+6. In your toy code, multiplying by `0.9` reduces pixel intensity each step, simulating how noise fades over time (a very simple denoising).
+
+
+
+It does a **toy demo of image denoising**:
+
+1. `image = np.random.rand(28, 28)`
+
+   * Creates a random noise image (28×28 pixels, values in \[0,1]).
+   * Step 0 shows pure noise.
+
+2. In the loop, each step does:
+
+   * `image = image * 0.9` → scales all pixel values down by 0.9.
+   * This gradually darkens the image (kind of "reducing intensity"), so it looks like the noise is fading away.
+
+3. `plt.imshow(image, cmap='gray')` → shows the image in grayscale at each step.
+
+So what you’re simulating is a **very simple denoising process**, but in real ML models (like diffusion models), denoising is much more complex: noise is added and then learned step by step to recover the structure.
+
+
+
