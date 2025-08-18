@@ -12,34 +12,100 @@ print("Attention Weights:", weights)
 print("Output:", output)
 
 THEORY - 
-This code is a **simple implementation of scaled dot-product attention** (the core idea behind Transformers). Let me explain:
+Here’s the related theory and explanation for your **Self-Attention mechanism code**:
 
-1. `x = torch.rand(1, 3, 4)` → creates a random input tensor.
+---
 
-   * Shape = `(batch=1, seq_len=3, embed_dim=4)`.
-   * So you have 3 tokens, each represented by a 4-dimensional vector.
+### 1. What is Self-Attention?
 
-2. `Q, K, V = x, x, x` → for simplicity, Query, Key, and Value are all set to the same input.
+* Self-Attention is the **core of the Transformer architecture** (used in BERT, GPT, etc.).
+* It allows each token in a sequence to **attend (focus) on other tokens** when creating its representation.
+* This helps capture **long-range dependencies** and contextual meaning in sequences (like words in a sentence).
 
-   * In real transformers, Q, K, and V come from learned linear projections.
+---
 
-3. `scores = torch.matmul(Q, K.transpose(-2, -1)) / (4 ** 0.5)` →
+### 2. Key Components
 
-   * Performs dot product between Q and K to measure similarity.
-   * Divides by √(d) (here √4=2) for scaling (avoids large values).
-   * Shape of `scores` = `(1, 3, 3)` → pairwise similarity between the 3 tokens.
+* **Q (Query), K (Key), V (Value):**
 
-4. `weights = F.softmax(scores, dim=-1)` → applies softmax so weights across each row sum to 1.
+  * Derived from the same input (`x`) using linear projections.
+  * In your code: `Q = K = V = x`.
 
-   * These are the **attention weights**, telling how much each token should attend to the others.
+* **Attention Scores:**
 
-5. `output = torch.matmul(weights, V)` → multiplies weights with values (V).
+  $$
+  \text{scores} = \frac{Q \cdot K^T}{\sqrt{d_k}}
+  $$
 
-   * Produces the **attention output**: a weighted sum of values.
-   * Shape = `(1, 3, 4)` → same as input embedding shape.
+  * Measures similarity between queries and keys.
+  * `d_k` = dimension of key (here 4).
 
-6. Finally, it prints the attention weights and the resulting output vectors.
+* **Softmax Weights:**
 
-So this code demonstrates how attention lets each token look at others and combine information in a weighted way.
+  $$
+  \text{weights} = \text{softmax}(\text{scores})
+  $$
+
+  * Converts scores into probabilities (how much focus to give to each token).
+
+* **Output:**
+
+  $$
+  \text{output} = \text{weights} \cdot V
+  $$
+
+  * Weighted sum of values, giving new contextualized embeddings.
+
+---
+
+### 3. About the Code
+
+1. **Input Tensor**
+
+   ```python
+   x = torch.rand(1, 3, 4)
+   ```
+
+   * Shape `(batch=1, sequence_length=3, features=4)`.
+   * Example: a sequence of 3 tokens, each with 4-dimensional embeddings.
+
+2. **Attention Scores**
+
+   ```python
+   scores = torch.matmul(Q, K.transpose(-2, -1)) / (4 ** 0.5)
+   ```
+
+   * Computes similarity between each pair of tokens.
+   * Shape: `(1, 3, 3)` → each token attends to 3 tokens (including itself).
+
+3. **Attention Weights**
+
+   ```python
+   weights = F.softmax(scores, dim=-1)
+   ```
+
+   * Normalizes scores into probabilities.
+   * Example: `[0.6, 0.3, 0.1]` → token attends mostly to the first token.
+
+4. **Output**
+
+   ```python
+   output = torch.matmul(weights, V)
+   ```
+
+   * Shape: `(1, 3, 4)` → same as input, but now embeddings are **context-aware**.
+
+---
+
+### 4. Why Self-Attention is Important in Generative AI
+
+* Captures **relationships between words** regardless of distance.
+* Example: In the sentence *“The cat that sat on the mat was black”*, self-attention helps connect *“cat”* and *“black”*.
+* Enables **parallel processing** (unlike RNNs which are sequential).
+* Foundation of **Transformers, GPT, BERT, Diffusion Models, Vision Transformers (ViTs)**.
+
+---
+
+👉 Do you want me to also show a **step-by-step numeric example** of how attention weights are computed for a small sequence (like with actual numbers instead of random tensors)?
 
 
