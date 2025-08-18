@@ -11,22 +11,63 @@ print("Vector for 'learning':", model.wv['learning'])
 print("Most similar to 'learning':", model.wv.most_similar('learning'))
 
 THEORY -
-This code is about **Word2Vec**, a word embedding model from the gensim library. 
 
-* The `sentences` list is your training data, where each inner list is a sentence split into words.
-* `Word2Vec` trains a model to represent words as numeric **vectors** in such a way that words with similar meaning are closer in vector space.
+### 1. Word Embeddings in Generative AI
 
-Parameters used:
+* Words are converted into **dense vectors** that capture semantic meaning.
+* Unlike one-hot encoding (sparse, no semantic info), embeddings place similar words closer in vector space.
+* Used in NLP tasks like text generation, machine translation, and chatbots.
 
-* `vector_size=10` → each word is represented by a 10-dimensional vector.
-* `window=2` → context window size, meaning the model looks at 2 words to the left and right to learn relationships.
-* `min_count=1` → include all words, even if they appear only once.
-* `sg=1` → use the Skip-Gram algorithm (predicts surrounding words given a target word).
+---
 
-After training:
+### 2. Word2Vec Model
 
-* `model.wv['learning']` → gives the learned vector representation of the word "learning".
-* `model.wv.most_similar('learning')` → finds words in the vocabulary most similar to "learning" based on cosine similarity.
+* Developed by Google (Mikolov et al., 2013).
+* Learns embeddings by predicting context words from a target word (CBOW) or predicting a target word from context (Skip-Gram).
+* Parameters in your code:
 
-So basically, this code creates a small Word2Vec model, shows the vector for "learning," and finds other words that the model thinks are most related to it.
+  * `vector_size=10`: Each word is represented as a 10-dimensional vector.
+  * `window=2`: Context window size = 2 (looks at 2 words before and after).
+  * `min_count=1`: Ignores words that appear less than 1 time (keeps all words here).
+  * `sg=1`: Skip-Gram model (better for small data, rare words).
+
+---
+
+### 3. How Training Works
+
+* Example sentence: `"machine learning is fun"`.
+* Skip-Gram tries to predict context words given `"learning"`.
+* Embeddings are adjusted so that words appearing in similar contexts (like “ai” and “learning”) end up closer in vector space.
+
+---
+
+### 4. Code Execution
+
+1. **Get Vector Representation**
+
+   ```python
+   print("Vector for 'learning':", model.wv['learning'])
+   ```
+
+   * Returns a 10-dimensional vector, e.g. `[0.012, -0.034, ...]`.
+   * Each dimension captures latent semantic information.
+
+2. **Find Most Similar Words**
+
+   ```python
+   print("Most similar to 'learning':", model.wv.most_similar('learning'))
+   ```
+
+   * Returns a list of words most similar to `"learning"` based on **cosine similarity** between vectors.
+   * Example output: `[('ai', 0.85), ('machine', 0.77), ...]`.
+
+---
+
+### 5. Why Word2Vec is Useful in Generative AI
+
+* Embeddings allow models to generate **meaningful, context-aware text**.
+* Instead of treating words as separate symbols, it captures **semantic relationships**:
+
+  * `"king - man + woman ≈ queen"`
+  * `"ai ≈ artificial intelligence"`
 
