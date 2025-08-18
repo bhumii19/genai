@@ -13,13 +13,72 @@ Unlike Word2Vec, which learns embeddings by predicting surrounding words, GloVe 
 It builds a co-occurrence matrix (how often words appear together) and then factorizes it to generate dense vector representations.
 
 In short, GloVe is a pre-trained word embedding model that captures both local context (word-to-word relations) and global statistics (overall word distribution), making it powerful for semantic similarity tasks.
-This code uses a **pre-trained word embedding model** instead of training one from scratch. Here’s how it works:
 
-* `import gensim.downloader as api` → allows you to download and load pre-trained models easily.
-* `glove_model = api.load("glove-wiki-gigaword-50")` → loads the **GloVe embeddings** trained on Wikipedia + Gigaword dataset, where each word is represented by a 50-dimensional vector.
-* `glove_model['computer']` → retrieves the 50-dimensional vector for the word "computer".
-* `glove_model.similarity('computer', 'laptop')` → calculates the **cosine similarity** between the two word vectors. A value closer to 1 means they are very similar in meaning, while values near 0 mean they are unrelated.
+Here’s the related theory and explanation for your **GloVe pre-trained embeddings code**:
 
-So, this code shows how to use a ready-made GloVe model to get word embeddings and measure semantic similarity between words.
+---
+
+### 1. What is GloVe?
+
+* **GloVe (Global Vectors for Word Representation)** is an unsupervised learning algorithm by Stanford (2014).
+* Unlike Word2Vec (local context-based), GloVe captures **global statistical information** from the entire text corpus.
+* It uses **word co-occurrence matrices** (how often words appear together in a large corpus) to learn embeddings.
+
+---
+
+### 2. Pre-trained GloVe Models
+
+* Trained on large text datasets like Wikipedia + Gigaword.
+* Different dimensions available (50, 100, 200, 300).
+* In your code: `"glove-wiki-gigaword-50"` → 50-dimensional embeddings trained on Wikipedia + Gigaword corpus.
+
+---
+
+### 3. About the Code
+
+1. **Load Model**
+
+   ```python
+   glove_model = api.load("glove-wiki-gigaword-50")
+   ```
+
+   * Downloads pre-trained vectors from `gensim` dataset API.
+   * Vocabulary includes millions of words.
+
+2. **Word Vector**
+
+   ```python
+   print("Vector for 'computer':", glove_model['computer'])
+   ```
+
+   * Returns a 50-dimensional dense vector for `"computer"`.
+   * Example: `[0.123, -0.456, ...]`.
+
+3. **Word Similarity**
+
+   ```python
+   print("Similarity between 'computer' and 'laptop':", glove_model.similarity('computer', 'laptop'))
+   ```
+
+   * Computes **cosine similarity** between embeddings of `"computer"` and `"laptop"`.
+   * Closer to `1.0` → very similar, closer to `0` → unrelated.
+   * Expected output: around `0.7–0.8` since both are semantically related.
+
+---
+
+### 4. Why GloVe is Useful in Generative AI
+
+* Provides **rich, pre-trained semantic representations** without training from scratch.
+* Speeds up model training for NLP tasks (text generation, sentiment analysis, translation).
+* Captures **linear relationships** between words (e.g., `"Paris - France + Italy ≈ Rome"`).
+
+---
+
+### 5. Difference Between Word2Vec and GloVe (Short)
+
+* **Word2Vec**: Learns embeddings by predicting neighboring words (local context).
+* **GloVe**: Learns embeddings from word co-occurrence statistics (global context).
+* Both place semantically similar words close in vector space, but their training approach differs.
+
 
 
