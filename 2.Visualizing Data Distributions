@@ -16,10 +16,70 @@ plt.show()
 
 
 THEORY- 
-This code is based on the concept of the **normal distribution** and **histograms**. 
-A normal distribution is a continuous probability distribution shaped like a bell curve, where most values lie close to the mean and fewer values appear farther away. 
-The spread of the data is controlled by the standard deviation: a smaller value makes the curve narrower, while a larger one makes it wider.
-A histogram is a graphical representation of data distribution. It divides the data into intervals (bins) and shows the frequency of values in each bin as bars. 
-This helps visualize how data points are spread out and whether they follow a certain pattern, such as a normal distribution.
-In this code, two groups of normally distributed data are generated with different means and standard deviations. 
-Plotting them on the same histogram allows comparison of their centers and spreads, making it clear how differently the two groups are distributed.
+
+### 1. Why Visualizing Data Distribution is Important in Generative AI
+
+* Generative AI models (GANs, VAEs, Diffusion Models) learn **underlying probability distributions** of data.
+* Visualizing distributions helps us understand the **spread, mean, variance, and overlap** of data groups.
+* This is crucial for:
+
+  * Checking if data is balanced or skewed.
+  * Identifying anomalies or biases.
+  * Understanding if two groups are separable (important in classification and generation).
+
+---
+
+### 2. About the Code
+
+1. **Synthetic Data Creation**
+
+   ```python
+   data_group1 = np.random.normal(loc=50, scale=10, size=500)
+   data_group2 = np.random.normal(loc=200, scale=15, size=500)
+   ```
+
+   * Group 1: Gaussian distribution with mean = 50, standard deviation = 10, 500 samples.
+   * Group 2: Gaussian distribution with mean = 200, standard deviation = 15, 500 samples.
+   * This mimics real-world features (e.g., pixel intensity clusters, income levels, sensor readings).
+
+2. **Histogram Plotting**
+
+   ```python
+   plt.hist(data_group1, label='Group 1', color='blue')
+   plt.hist(data_group2, label='Group 2', color='green')
+   ```
+
+   * Histograms show **frequency of values** in each group.
+   * Group 1 data clusters around 50, Group 2 around 200.
+   * They do not overlap much, meaning they are easily distinguishable.
+
+3. **Adding Labels & Legend**
+
+   ```python
+   plt.title("Data Distribution")
+   plt.xlabel("Data Values")
+   plt.ylabel("Frequency")
+   plt.legend()
+   ```
+
+   * Makes visualization clearer and interpretable.
+
+---
+
+### 3. Theory Behind Data Distribution in Generative AI
+
+* **Normal Distribution (Gaussian)** is often assumed in modeling real-world data.
+* Generative models try to **sample from such distributions** to create realistic data.
+* For example:
+
+  * VAEs assume latent variables follow a Gaussian distribution.
+  * GANs learn to map random noise (from simple distributions like uniform/normal) to complex real-world data distributions.
+
+---
+
+### 4. Why Histograms Help in Generative AI
+
+* Show how **data clusters** are formed.
+* Help detect **imbalances** (e.g., one group having more samples than another).
+* Provide intuition about how hard or easy it is for a model to **separate classes** or **generate new samples**.
+
