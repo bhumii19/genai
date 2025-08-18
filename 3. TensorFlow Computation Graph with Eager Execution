@@ -13,11 +13,68 @@ print("Graph Mode Output:", result.numpy())
 
 
 THEORY -
-This code shows the difference between **Eager Execution** and **Graph Execution** in TensorFlow.
-TensorFlow normally works with a **computation graph**, where operations are built as a graph and executed later for efficiency. 
-But since TensorFlow 2.x, **Eager Execution** is enabled by default, meaning operations are run immediately and return results directly like normal Python code.
-In the first part, two tensors `a` and `b` are created, and `c = a + b` runs instantly. Printing `c.numpy()` gives the result as a NumPy array, which is eager execution.
-In the second part, the function `multiply_tensors` is decorated with `@tf.function`, which tells TensorFlow to convert it into a computation graph. 
-This means the function runs in **graph mode**, optimizing performance and making it suitable for large-scale training. 
-When `multiply_tensors(a, b)` is called, it executes as part of the computation graph, and the output is again converted to a NumPy array for printing.
-So, the code demonstrates that TensorFlow can execute operations both eagerly (immediate results) and in graph mode (optimized execution).
+### 1. TensorFlow Computation Graph
+
+* TensorFlow works using a **computation graph** where nodes represent operations (e.g., addition, multiplication) and edges represent data (tensors).
+* Earlier TensorFlow (v1.x) required users to **build graphs first, then run them** using `sess.run()`.
+* TensorFlow (v2.x) introduced **Eager Execution** by default, making it more Pythonic and user-friendly.
+
+---
+
+### 2. Eager Execution
+
+* Eager mode means operations are executed **immediately**, like standard Python code.
+* Example:
+
+  ```python
+  a = tf.constant([5.0, 3.0])
+  b = tf.constant([2.0, 7.0])
+  c = a + b
+  print(c.numpy())   # [7.0, 10.0]
+  ```
+* Here, the addition happens instantly, and you can view results without building a graph.
+* Useful for debugging and experimentation.
+
+---
+
+### 3. Graph Mode with `@tf.function`
+
+* `@tf.function` converts a Python function into a **TensorFlow computation graph**.
+* Instead of executing line by line, TensorFlow builds a graph of operations and runs it more efficiently.
+* Example:
+
+  ```python
+  @tf.function
+  def multiply_tensors(x, y):
+      return x * y
+  ```
+* TensorFlow compiles this into a graph internally.
+* Running it is faster than eager execution (especially on GPUs/TPUs).
+
+---
+
+### 4. Code Output Explanation
+
+1. **Eager Execution Output:**
+
+   ```
+   [7. 10.]
+   ```
+
+   (since \[5+2, 3+7] = \[7, 10])
+
+2. **Graph Mode Output:**
+
+   ```
+   [10. 21.]
+   ```
+
+   (since \[5*2, 3*7] = \[10, 21])
+
+---
+
+### 5. Why Both Modes Matter in Generative AI
+
+* **Eager Execution:** Easy debugging, rapid prototyping of neural networks.
+* **Graph Mode:** Optimized execution, required for training **large generative models (GANs, Transformers, Diffusion Models)** efficiently.
+
