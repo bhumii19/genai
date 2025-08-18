@@ -1,0 +1,94 @@
+1. pip uninstall tensorflow tensorflow-intel -y
+2. pip install --upgrade transformers torch --extra-index-url https://download.pytorch.org/whl/cpu
+3. import torch
+print(torch.__version__)
+print(torch.cuda.is_available())  # True if CUDA GPU is detected
+4. 
+from transformers import BertTokenizer, BertModel
+import torch
+
+# Load tokenizer & model
+tokenizer = BertTokenizer.from_pretrained('bert-base-uncased')
+model = BertModel.from_pretrained('bert-base-uncased')
+
+# Tokenize input
+inputs = tokenizer("Generative AI creates realistic images", return_tensors="pt")
+
+# Run through model
+outputs = model(**inputs)
+
+print("BERT Output Shape:", outputs.last_hidden_state.shape)
+print("First token embedding:", outputs.last_hidden_state[0][0][:5])
+
+OR 
+
+from transformers import BertTokenizer, BertModel
+
+tokenizer = BertTokenizer.from_pretrained('bert-base-uncased')
+model = BertModel.from_pretrained('bert-base-uncased')
+
+inputs = tokenizer("Generative AI creates realistic images", return_tensors="pt")
+outputs = model(**inputs)
+
+print("BERT Output Shape:", outputs.last_hidden_state.shape)
+print("First token embedding:", outputs.last_hidden_state[0][0][:5])
+
+
+
+THOERY - 
+
+---
+
+### Definition of BERT
+
+* **BERT (Bidirectional Encoder Representations from Transformers)** is a transformer-based deep learning model developed by Google.
+* It is **pre-trained on large text corpora** (Wikipedia + BooksCorpus) to understand the **context of words in both directions (left & right)**.
+* BERT is mainly used for **NLP tasks** like text classification, sentiment analysis, question answering, and embeddings.
+
+---
+
+### Related Theory Behind the Code
+
+1. **Tokenizer (BertTokenizer)**
+
+   * Converts raw text into tokens (subword units).
+   * Maps tokens to numerical IDs using BERT’s vocabulary.
+   * Adds special tokens like `[CLS]` (start) and `[SEP]` (end).
+   * Outputs tensors ready for the model.
+
+2. **Model (BertModel)**
+
+   * Takes token IDs and produces embeddings (vector representations).
+   * Returns `last_hidden_state`, which contains contextual embeddings for each token.
+   * Each embedding captures **semantic meaning** of a word in its sentence context.
+
+3. **Input Text**
+
+   * `"Generative AI creates realistic images"` is the example sentence.
+   * Tokenizer breaks it into pieces like `[CLS] generative ai creates realistic images [SEP]`.
+
+4. **Forward Pass**
+
+   * Tokens are passed into the BERT model.
+   * Model applies **multi-head self-attention + transformer layers**.
+   * Produces contextual embeddings (vector for each token, size = hidden dimension, typically 768).
+
+5. **Outputs**
+
+   * `outputs.last_hidden_state.shape` gives the size → `(batch_size, sequence_length, hidden_size)`.
+   * Example: `(1, 9, 768)` means → 1 sentence, 9 tokens, 768-dimensional embedding each.
+   * `outputs.last_hidden_state[0][0][:5]` shows first 5 values of the embedding of the first token.
+
+---
+
+### Why Important?
+
+* BERT embeddings are **universal language representations**.
+* They can be used in:
+
+  * Text classification
+  * Sentiment detection
+  * Similarity search
+  * Question answering
+
+
